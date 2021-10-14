@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="606d7cce-1b3a-4d85-865e-2eff47943268">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[Select * from pruebajoyeria.usuario]]>
+	</queryString>
+	<field name="Id_usuario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Llave Primaria]]></fieldDescription>
+	</field>
+	<field name="correoUsuario" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre del Usuario]]></fieldDescription>
+	</field>
+	<field name="nickUsuario" class="java.lang.String">
+		<fieldDescription><![CDATA[Nick del usuario]]></fieldDescription>
+	</field>
+	<field name="passwordUsuario" class="java.lang.String">
+		<fieldDescription><![CDATA[Contraseña del usuario]]></fieldDescription>
+	</field>
+	<field name="rolUsuario" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[Rol de usuario]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="69" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="69" forecolor="#FFFFFF" backcolor="#009999" uuid="84508923-b6b6-442a-9fd0-5db0239b5617"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Joyerias Brador - Usuarios]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="512" y="11" width="43" height="20" uuid="a45231dc-77de-4002-b6db-64227c680c47"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="11" width="100" height="20" uuid="01769e7f-5a7c-42e5-8632-d8445f269731"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="41" width="100" height="20" uuid="7828e3f6-fa46-4b13-92e4-67c6faf56259"/>
+				<text><![CDATA[Llave Primaria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="246" y="41" width="100" height="20" uuid="ad83039c-1bf2-4673-8dfd-fafddd478043"/>
+				<text><![CDATA[Correo Usuario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="41" width="100" height="20" uuid="88cfc085-8e0e-42e6-9e9e-004f099e23c5"/>
+				<text><![CDATA[Contraseña]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="41" width="100" height="20" uuid="2c994281-1be1-4392-b9ca-c94fcb596420"/>
+				<text><![CDATA[Nick]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="499" y="41" width="56" height="20" uuid="2925cce6-1dc3-48fd-bbf2-46826078cd97"/>
+				<text><![CDATA[¿Admin?]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="72" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="21" width="100" height="20" uuid="2acf3f09-d71b-4bdf-a1b6-52db1d1b029e"/>
+				<textFieldExpression><![CDATA[$F{Id_usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="246" y="21" width="100" height="20" uuid="273ee4d4-42a1-4bf9-bc52-0fd552cf76dd"/>
+				<textFieldExpression><![CDATA[$F{correoUsuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="21" width="100" height="20" uuid="78a8e6d0-b96b-4df4-bf05-0e19bf4b8557"/>
+				<textFieldExpression><![CDATA[$F{passwordUsuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="119" y="21" width="100" height="20" uuid="ceb88155-ae45-4cec-9944-d378c793416d"/>
+				<textFieldExpression><![CDATA[$F{nickUsuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="499" y="20" width="56" height="20" uuid="a4985382-e73b-4dae-b4be-99dc0044b4a1"/>
+				<textFieldExpression><![CDATA[$F{rolUsuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
