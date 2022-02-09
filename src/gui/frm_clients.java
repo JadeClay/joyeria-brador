@@ -92,6 +92,7 @@ public class frm_clients extends javax.swing.JFrame{
     private void initComponents() {
 
         jp_sidebar = new javax.swing.JPanel();
+        btn_exit = new javax.swing.JButton();
         jp_panel = new javax.swing.JPanel();
         jscroll_table = new javax.swing.JScrollPane();
         table_clients = new javax.swing.JTable();
@@ -103,7 +104,6 @@ public class frm_clients extends javax.swing.JFrame{
         btn_delete = new javax.swing.JButton();
         btn_create = new javax.swing.JButton();
         btn_modify = new javax.swing.JButton();
-        btn_exit = new javax.swing.JButton();
         lbl_telefono = new javax.swing.JLabel();
         lbl_cedula = new javax.swing.JLabel();
         txt_cedula = new javax.swing.JTextField();
@@ -117,15 +117,30 @@ public class frm_clients extends javax.swing.JFrame{
 
         jp_sidebar.setBackground(new java.awt.Color(0, 102, 102));
 
+        btn_exit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btn_exit.setForeground(new java.awt.Color(255, 0, 0));
+        btn_exit.setText("<-");
+        btn_exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_exitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jp_sidebarLayout = new javax.swing.GroupLayout(jp_sidebar);
         jp_sidebar.setLayout(jp_sidebarLayout);
         jp_sidebarLayout.setHorizontalGroup(
             jp_sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 96, Short.MAX_VALUE)
+            .addGroup(jp_sidebarLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(btn_exit)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jp_sidebarLayout.setVerticalGroup(
             jp_sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jp_sidebarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btn_exit)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         table_clients.setModel(new javax.swing.table.DefaultTableModel(
@@ -146,11 +161,13 @@ public class frm_clients extends javax.swing.JFrame{
         });
         jscroll_table.setViewportView(table_clients);
 
-        lbl_panel.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lbl_panel.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         lbl_panel.setText("Panel de Clientes");
 
+        lbl_nombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbl_nombre.setText("Nombre:");
 
+        lbl_apellidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbl_apellidos.setText("Apellidos:");
 
         btn_delete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -177,33 +194,33 @@ public class frm_clients extends javax.swing.JFrame{
             }
         });
 
-        btn_exit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btn_exit.setForeground(new java.awt.Color(255, 0, 0));
-        btn_exit.setText("Salir");
-        btn_exit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_exitActionPerformed(evt);
-            }
-        });
-
+        lbl_telefono.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbl_telefono.setText("Telefono:");
 
+        lbl_cedula.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbl_cedula.setText("Cedula:");
 
+        lbl_universidad.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbl_universidad.setText("Universidad:");
 
+        lbl_direccion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbl_direccion.setText("Direccion:");
 
         javax.swing.GroupLayout jp_panelLayout = new javax.swing.GroupLayout(jp_panel);
         jp_panel.setLayout(jp_panelLayout);
         jp_panelLayout.setHorizontalGroup(
             jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jp_panelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_panel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jscroll_table, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
             .addGroup(jp_panelLayout.createSequentialGroup()
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(80, 80, 80)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jp_panelLayout.createSequentialGroup()
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jp_panelLayout.createSequentialGroup()
-                                .addGap(80, 80, 80)
                                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lbl_apellidos)
                                     .addComponent(lbl_nombre)
@@ -211,76 +228,61 @@ public class frm_clients extends javax.swing.JFrame{
                                     .addComponent(lbl_cedula)
                                     .addComponent(lbl_direccion))
                                 .addGap(23, 23, 23))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jp_panelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lbl_universidad)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_nombre)
-                            .addComponent(txt_apellidos, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt_cedula)
-                            .addComponent(txt_telefono, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt_direccion)
-                            .addComponent(txt_universidad, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(56, 56, 56)
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_create, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jp_panelLayout.createSequentialGroup()
-                                .addComponent(btn_modify)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn_exit))))
+                                .addComponent(lbl_universidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(5, 5, 5)))
+                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txt_apellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
+                            .addComponent(txt_cedula, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_telefono, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_direccion, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_universidad, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_nombre)))
                     .addGroup(jp_panelLayout.createSequentialGroup()
-                        .addContainerGap(31, Short.MAX_VALUE)
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jscroll_table, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jp_panelLayout.createSequentialGroup()
-                                .addComponent(lbl_panel)
-                                .addGap(141, 141, 141)))))
-                .addContainerGap(32, Short.MAX_VALUE))
+                        .addComponent(btn_create, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_modify)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jp_panelLayout.setVerticalGroup(
             jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jp_panelLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jp_panelLayout.createSequentialGroup()
-                        .addComponent(lbl_panel)
-                        .addGap(18, 18, 18)
-                        .addComponent(jscroll_table, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbl_nombre)
-                            .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_apellidos)
-                            .addComponent(txt_apellidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_cedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_cedula))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_telefono))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbl_direccion)
-                            .addComponent(txt_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jp_panelLayout.createSequentialGroup()
-                        .addComponent(btn_create, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btn_modify, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_exit))
-                        .addGap(7, 7, 7)
-                        .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(lbl_panel)
+                .addGap(18, 18, 18)
+                .addComponent(jscroll_table, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_nombre)
+                    .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_apellidos)
+                    .addComponent(txt_apellidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_cedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_cedula))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_telefono))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_direccion)
+                    .addComponent(txt_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_universidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_universidad))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_create, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_modify, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -290,15 +292,15 @@ public class frm_clients extends javax.swing.JFrame{
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jp_sidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jp_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jp_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jp_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jp_sidebar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
