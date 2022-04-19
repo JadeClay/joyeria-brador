@@ -6,6 +6,7 @@
 package gui;
 
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -470,8 +471,9 @@ public class frm_user extends javax.swing.JFrame {
     }//GEN-LAST:event_table_usersMouseClicked
 
     private void btn_formActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_formActionPerformed
+
         try{
-          JasperReport jr = (JasperReport) JRLoader.loadObject(frm_user.class.getResource("/reportes/reporte_usuarios.jasper"));
+          JasperReport jr = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/reporte_usuario.jasper"));
           //Codigo en comentario es agregando los datos directamente
           Map parametros = new HashMap<>();
           parametros.put("Titulo", "Reporte de Usuarios");
@@ -483,6 +485,7 @@ public class frm_user extends javax.swing.JFrame {
         }
         catch (JRException ex) {
             JOptionPane.showMessageDialog(rootPane, ex);
+            System.out.println(ex);
         }
     }//GEN-LAST:event_btn_formActionPerformed
 
