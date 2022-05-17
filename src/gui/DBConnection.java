@@ -17,7 +17,7 @@ public class DBConnection {
     
     
     public static Connection getConnection(){ // Static method to connect to the database
-        final String dbPath = "jdbc:mysql://localhost:3306/joyeriabrador"; // Path to the database.
+        final String dbPath = "jdbc:mysql://localhost:3306/joyeriabrador?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"; // Path to the database.
         Connection con = null;
         
         try{
