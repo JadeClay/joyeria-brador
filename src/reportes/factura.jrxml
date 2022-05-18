@@ -49,35 +49,156 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="457" y="15" width="100" height="20" uuid="f7f06fa7-3a75-4221-8315-5ff7c3c3ae42"/>
+				<reportElement x="457" y="0" width="100" height="20" uuid="f7f06fa7-3a75-4221-8315-5ff7c3c3ae42"/>
 				<textFieldExpression><![CDATA[$F{id_factura}]]></textFieldExpression>
 			</textField>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="387" y="0" width="60" height="20" uuid="309da3bc-2d61-48a1-8598-1e09d8606208"/>
+				<text><![CDATA[Factura No.]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="0" y="0" width="100" height="20" uuid="217c4dbc-ac9c-4f82-a4b7-0a9e2341704f"/>
+				<reportElement x="83" y="0" width="100" height="20" uuid="217c4dbc-ac9c-4f82-a4b7-0a9e2341704f"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="114" y="0" width="100" height="20" uuid="05c584f3-1eb0-4ebb-a88f-29c48399f3e7"/>
+				<reportElement x="183" y="0" width="100" height="20" uuid="05c584f3-1eb0-4ebb-a88f-29c48399f3e7"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{apellidos}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="83" height="20" uuid="58aac59e-a09d-4b4c-bf0e-585926a53e80"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendido a:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="60" width="100" height="20" uuid="9161ad88-816b-4dff-ad0b-a8d156c168f4"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="12" width="100" height="20" uuid="3faac5a7-78f5-484c-aa75-b53080bf47ab"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subtotal:  RD$]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="457" y="12" width="99" height="20" uuid="b8b7c58b-945f-40e2-bbbf-99ce3f31a53d"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Monto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="357" y="32" width="100" height="20" uuid="731beb21-99c3-4153-894e-2573eee18b37"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ITBIS:        RD$]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="457" y="32" width="99" height="20" uuid="766f5830-3c65-4101-9fde-5bcead78f2f1"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ITBIS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="357" y="52" width="100" height="20" uuid="183eceea-676d-4617-a57b-c50c726e11d8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:        RD$]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="457" y="52" width="99" height="20" uuid="2dc8b5e9-7df1-4410-9906-2026e5b84b7c"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Subtotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="128" height="60" uuid="fd4e0fac-a6c6-4e90-a9b1-d0da6c13dfd4"/>
+				<text><![CDATA[Joyerias Brador, SRL. Avenida Plaza Las Américas. Santo Domingo 809 547 7107]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="3f9fd73f-1d93-40ee-913c-d150e010a18a"/>
+				<textFieldExpression><![CDATA[$F{nombreProducto}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="435" y="0" width="80" height="20" uuid="92e2ff71-38cd-410c-93cc-978ad047cc95"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="0" width="40" height="20" uuid="06a3a549-e050-4b84-af1e-9f8df36d3e15"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
