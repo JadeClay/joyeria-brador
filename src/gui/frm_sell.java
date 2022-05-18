@@ -11,10 +11,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -25,15 +37,18 @@ public class frm_sell extends javax.swing.JFrame {
     private final String userName;
     DefaultTableModel sell;
     private final Connection con = DBConnection.getConnection(); // Saving MYSQL Database connection into a variable
-    private int fk_factura;
+    private int fk_factura = setfk_factura();
     
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // Instancing a formatter to save the date into mysql
 
+    
+    
     /**
      * Creates new form frm_main
      * @param userRole
      * @param userName
      */
+    
     public frm_sell(int userRole, String userName) {
         initComponents();
         
@@ -44,6 +59,9 @@ public class frm_sell extends javax.swing.JFrame {
             btn_delete.setEnabled(false);
         }
         mostrarTabla(0, 0);
+        
+        
+        
        
         try {
             String sql = "SELECT nombre, apellidos FROM cliente";
@@ -80,10 +98,34 @@ public class frm_sell extends javax.swing.JFrame {
 
     }
     
+    private int setfk_factura(){
+        String sql = "SELECT id_factura FROM factura";
+        int id_factura = 0;
+        
+            try {
+            
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+           while(rs.next()){
+                id_factura = rs.getInt(1);
+           }
+           
+           id_factura += 1;
+           
+           } catch(SQLException ex){
+                String err = ex.toString(); // Saving the error to a variable while converting it into a string
+
+                JOptionPane.showConfirmDialog(this, err);
+            }
+               
+        return id_factura;
+    }
+    
      private void mostrarTabla(int valorCliente, int valorProducto){
         refrescarTabla();
         String[] columnNames = {"Cliente", "Monto", "ITBIS", "Subtotal", "Fecha" };
-        sell = new DefaultTableModel(columnNames, 0); // Setting the column names of the Table Model;
+        sell = new DefaultTableModel(columnNames, 0); // Setting the column names of the Table Model
         String sql;
         if(valorCliente == 0 && valorProducto == 0){
             sql = "SELECT id_cliente, Monto, ITBIS, Subtotal, Fecha FROM factura";
@@ -108,8 +150,6 @@ public class frm_sell extends javax.swing.JFrame {
                 
                 sell.addRow(data); // Adding the row to the Table Model
             }
-           
-           fk_factura = rs.getRow();
            table_sell.setModel(sell);
         } catch(SQLException ex){
             String err = ex.toString(); // Saving the error to a variable while converting it into a string
@@ -350,17 +390,16 @@ public class frm_sell extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
+        
         int Producto = cmb_producto.getSelectedIndex();
   
-        String sql = "INSERT INTO detalle_factura(fk_producto, fk_factura) VALUES("+ fk_factura + ", '" + Producto + "')";
+        String sql = "INSERT INTO detalle_factura(fk_factura, fk_producto) VALUES("+ fk_factura + ", '" + Producto + "')";
         
         try{
             Statement st = con.createStatement();
             st.executeUpdate(sql);
             
-            cmb_cliente.setSelectedIndex(0);
-            cmb_producto.setSelectedIndex(0);
-            txt_monto.setText(""); // Cleaning the text fields
+            cmb_producto.setSelectedIndex(0);// Cleaning the text fields
             
         } catch(SQLException ex) {
             String err = ex.toString(); // Saving the error to a variable while converting it into a string
@@ -368,6 +407,7 @@ public class frm_sell extends javax.swing.JFrame {
             JOptionPane.showConfirmDialog(this, err);
         }
         mostrarTabla(0,0);
+           
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed
@@ -399,13 +439,14 @@ public class frm_sell extends javax.swing.JFrame {
     }//GEN-LAST:event_cmb_clienteActionPerformed
 
     private void btn_facturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_facturarActionPerformed
+        
         int Cliente = cmb_cliente.getSelectedIndex();
         int Monto = Integer.valueOf(txt_monto.getText());
         int ITBIS = (Monto * 18)/100; // Calculating the taxes
         int Subtotal = Monto + ITBIS; // Adding taxes to the amount, and getting the total amount from the 
         String Fecha = String.valueOf(formatter.format(java.util.Calendar.getInstance().getTime()));
   
-        String sql = "INSERT INTO factura(id_cliente, Monto, ITBIS, Subtotal, Fecha) VALUES("+ Cliente + ", " + Monto + ", "+ ITBIS + ", " + Subtotal + ", " + Fecha + "')";
+        String sql = "INSERT INTO factura(id_cliente, Monto, ITBIS, Subtotal, Fecha) VALUES('"+ Cliente + "', " + Monto + ", "+ ITBIS + ", " + Subtotal + ", '" + Fecha + "')";
         
         try{
             Statement st = con.createStatement();
@@ -415,12 +456,30 @@ public class frm_sell extends javax.swing.JFrame {
             cmb_producto.setSelectedIndex(0);
             txt_monto.setText(""); // Cleaning the text fields
             
+            fk_factura = setfk_factura();
+            
         } catch(SQLException ex) {
             String err = ex.toString(); // Saving the error to a variable while converting it into a string
             
             JOptionPane.showConfirmDialog(this, err);
         }
+        
+        try{
+          JasperReport jr = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/factura.jasper"));
+          
+          Map parametros = new HashMap<>();
+          parametros.put("id_factura", fk_factura);
+            
+          JasperPrint jp = JasperFillManager.fillReport(jr, parametros, con);
+          JasperViewer jv = new JasperViewer(jp);
+          jv.setVisible(true); 
+        }catch (JRException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex);
+            System.out.println(ex);
+        }
         mostrarTabla(0,0);
+        
+        
     }//GEN-LAST:event_btn_facturarActionPerformed
 
     /**
