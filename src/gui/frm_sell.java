@@ -6,6 +6,7 @@
 package gui;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,10 +23,6 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.design.JRDesignQuery;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
@@ -58,7 +55,7 @@ public class frm_sell extends javax.swing.JFrame {
         if(this.userRole == 0){
             btn_delete.setEnabled(false);
         }
-        mostrarTabla(0, 0);
+        mostrarTabla(0);
         
         
         
@@ -122,15 +119,15 @@ public class frm_sell extends javax.swing.JFrame {
         return id_factura;
     }
     
-     private void mostrarTabla(int valorCliente, int valorProducto){
+     private void mostrarTabla(int valorCliente){
         refrescarTabla();
-        String[] columnNames = {"Cliente", "Monto", "ITBIS", "Subtotal", "Fecha" };
+        String[] columnNames = {"Cliente", "Fecha" };
         sell = new DefaultTableModel(columnNames, 0); // Setting the column names of the Table Model
         String sql;
-        if(valorCliente == 0 && valorProducto == 0){
-            sql = "SELECT id_cliente, Monto, ITBIS, Subtotal, Fecha FROM factura";
+        if(valorCliente == 0){
+            sql = "SELECT id_cliente, Fecha FROM factura";
         } else {
-            sql = "SELECT id_cliente, Monto, ITBIS, Subtotal, Fecha FROM factura WHERE id_cliente = "+ valorCliente + " OR idProducto = "+ valorProducto;
+            sql = "SELECT id_cliente, Fecha FROM factura WHERE id_cliente = "+ valorCliente;
         }
         
         try {
@@ -140,13 +137,9 @@ public class frm_sell extends javax.swing.JFrame {
             
            while(rs.next()){
                 String idCliente = String.valueOf(rs.getInt(1));
-                String Monto = String.valueOf(rs.getInt(2));
-                String ITBIS = String.valueOf(rs.getInt(3));
-                String Subtotal = String.valueOf(rs.getInt(4));
-                String Fecha = String.valueOf(rs.getDate(5));
+                String Fecha = String.valueOf(rs.getDate(2));
                 
-                
-                String[] data = {idCliente, Monto, ITBIS, Subtotal, Fecha}; // Saving one row of data
+                String[] data = {idCliente, Fecha}; // Saving one row of data
                 
                 sell.addRow(data); // Adding the row to the Table Model
             }
@@ -183,7 +176,7 @@ public class frm_sell extends javax.swing.JFrame {
         lbl_monto = new javax.swing.JLabel();
         btn_delete = new javax.swing.JButton();
         btn_add = new javax.swing.JButton();
-        txt_monto = new javax.swing.JTextField();
+        txt_cantidad = new javax.swing.JTextField();
         cmb_cliente = new javax.swing.JComboBox<>();
         cmb_producto = new javax.swing.JComboBox<>();
         btn_facturar = new javax.swing.JButton();
@@ -246,7 +239,7 @@ public class frm_sell extends javax.swing.JFrame {
         lbl_producto.setText("Producto:");
 
         lbl_monto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lbl_monto.setText("Monto:");
+        lbl_monto.setText("Cantidad:");
 
         btn_delete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btn_delete.setText("Borrar producto");
@@ -264,9 +257,9 @@ public class frm_sell extends javax.swing.JFrame {
             }
         });
 
-        txt_monto.addKeyListener(new java.awt.event.KeyAdapter() {
+        txt_cantidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_montoKeyTyped(evt);
+                txt_cantidadKeyTyped(evt);
             }
         });
 
@@ -295,24 +288,23 @@ public class frm_sell extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(lbl_panel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jscroll_table, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+            .addComponent(jscroll_table, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
             .addGroup(jp_panelLayout.createSequentialGroup()
-                .addGap(82, 82, 82)
+                .addGap(79, 79, 79)
                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_monto)
-                    .addComponent(lbl_producto)
-                    .addComponent(lbl_cliente))
-                .addGap(21, 21, 21)
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_facturar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txt_monto, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-                        .addComponent(cmb_cliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmb_producto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jp_panelLayout.createSequentialGroup()
-                            .addComponent(btn_add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btn_delete))))
+                    .addComponent(lbl_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_monto, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_producto))
+                .addGap(23, 23, 23)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jp_panelLayout.createSequentialGroup()
+                        .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_delete))
+                    .addComponent(txt_cantidad)
+                    .addComponent(cmb_cliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmb_producto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_facturar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jp_panelLayout.setVerticalGroup(
@@ -326,21 +318,24 @@ public class frm_sell extends javax.swing.JFrame {
                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_cliente)
                     .addComponent(cmb_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_producto)
-                    .addComponent(cmb_producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmb_producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_producto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jp_panelLayout.createSequentialGroup()
+                        .addComponent(lbl_monto)
+                        .addGap(6, 6, 6))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jp_panelLayout.createSequentialGroup()
+                        .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_monto)
-                    .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_facturar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -370,30 +365,8 @@ public class frm_sell extends javax.swing.JFrame {
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         int Cliente = cmb_cliente.getSelectedIndex();
         int Producto = cmb_producto.getSelectedIndex();
-        int Monto = Integer.valueOf(txt_monto.getText());
-        String sql = "DELETE FROM factura WHERE id_cliente = " + Cliente + " AND idProducto = " + Producto + " AND Monto = " + Monto;
-        
-        try{
-            Statement st = con.createStatement();
-            st.executeUpdate(sql);
-            
-            cmb_cliente.setSelectedIndex(0);
-            cmb_producto.setSelectedIndex(0);
-            txt_monto.setText(""); // Cleaning the textfields
-            
-        } catch(SQLException ex) {
-            String err = ex.toString(); // Saving the error to a variable while converting it into a string
-            
-            JOptionPane.showConfirmDialog(this, err);
-        }
-        mostrarTabla(0,0);
-    }//GEN-LAST:event_btn_deleteActionPerformed
-
-    private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        
-        int Producto = cmb_producto.getSelectedIndex();
-  
-        String sql = "INSERT INTO detalle_factura(fk_factura, fk_producto) VALUES("+ fk_factura + ", '" + Producto + "')";
+        int Monto = Integer.valueOf(txt_cantidad.getText());
+        String sql = "DELETE FROM detalle_factura WHERE fk_factura = " + fk_factura + " ORDER BY id DESC LIMIT 1";
         
         try{
             Statement st = con.createStatement();
@@ -406,7 +379,52 @@ public class frm_sell extends javax.swing.JFrame {
             
             JOptionPane.showConfirmDialog(this, err);
         }
-        mostrarTabla(0,0);
+        mostrarTabla(0);
+        
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
+        
+        int Producto = cmb_producto.getSelectedIndex();
+        int Cantidad = Integer.valueOf(txt_cantidad.getText());
+        int Costo, ITBIS, Total = 0;
+        
+        String sql = "SELECT costoProducto FROM producto WHERE idProducto =" + Producto;
+        
+        try{
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            rs.beforeFirst();
+            if(rs.next()){
+                Costo = rs.getInt(1);
+            }else{
+                Costo = 1;
+            }
+            
+            ITBIS = (Costo * 18)/100; // Calculating the taxes
+            Total = (Costo + ITBIS) * Cantidad; // Adding the taxes to the cost
+            
+        } catch(SQLException ex) {
+            String err = ex.toString(); // Saving the error to a variable while converting it into a string
+            System.out.println(err);
+            JOptionPane.showConfirmDialog(this, err);
+        }
+        
+        sql = "INSERT INTO detalle_factura(fk_factura, fk_producto, monto, cantidad) VALUES("+ fk_factura + ", " + Producto + "," + Total + "," + Cantidad + ")";
+        
+        try{
+            Statement st = con.createStatement();
+            st.executeUpdate(sql);
+            
+            cmb_producto.setSelectedIndex(0);// Cleaning the text fields
+            
+        } catch(SQLException ex) {
+            String err = ex.toString(); // Saving the error to a variable while converting it into a string
+            
+            JOptionPane.showConfirmDialog(this, err);
+        }
+        mostrarTabla(0);
            
     }//GEN-LAST:event_btn_addActionPerformed
 
@@ -419,9 +437,9 @@ public class frm_sell extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_exitActionPerformed
 
-    private void txt_montoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_montoKeyTyped
+    private void txt_cantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cantidadKeyTyped
         textFieldsRestrictions.justNumbers(evt);
-    }//GEN-LAST:event_txt_montoKeyTyped
+    }//GEN-LAST:event_txt_cantidadKeyTyped
 
     private void table_sellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_sellMouseClicked
        // Getting the information of the selected row by the user
@@ -430,7 +448,7 @@ public class frm_sell extends javax.swing.JFrame {
        
        cmb_cliente.setSelectedIndex(Integer.parseInt(table_sell.getValueAt(SelectedRow, 0).toString()));
        cmb_producto.setSelectedIndex(Integer.parseInt(table_sell.getValueAt(SelectedRow, 1).toString()));
-       txt_monto.setText(table_sell.getValueAt(SelectedRow, 2).toString());
+       txt_cantidad.setText(table_sell.getValueAt(SelectedRow, 2).toString());
        
     }//GEN-LAST:event_table_sellMouseClicked
 
@@ -440,13 +458,11 @@ public class frm_sell extends javax.swing.JFrame {
 
     private void btn_facturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_facturarActionPerformed
         
+        int Producto = cmb_producto.getSelectedIndex();
         int Cliente = cmb_cliente.getSelectedIndex();
-        int Monto = Integer.valueOf(txt_monto.getText());
-        int ITBIS = (Monto * 18)/100; // Calculating the taxes
-        int Subtotal = Monto + ITBIS; // Adding taxes to the amount, and getting the total amount from the 
         String Fecha = String.valueOf(formatter.format(java.util.Calendar.getInstance().getTime()));
-  
-        String sql = "INSERT INTO factura(id_cliente, Monto, ITBIS, Subtotal, Fecha) VALUES('"+ Cliente + "', " + Monto + ", "+ ITBIS + ", " + Subtotal + ", '" + Fecha + "')";
+        
+        String sql = "INSERT INTO factura(id_cliente, Fecha) VALUES("+ Cliente + ", '" + Fecha + "')";
         
         try{
             Statement st = con.createStatement();
@@ -454,9 +470,7 @@ public class frm_sell extends javax.swing.JFrame {
             
             cmb_cliente.setSelectedIndex(0);
             cmb_producto.setSelectedIndex(0);
-            txt_monto.setText(""); // Cleaning the text fields
-            
-            fk_factura = setfk_factura();
+            txt_cantidad.setText(""); // Cleaning the text fields
             
         } catch(SQLException ex) {
             String err = ex.toString(); // Saving the error to a variable while converting it into a string
@@ -464,20 +478,29 @@ public class frm_sell extends javax.swing.JFrame {
             JOptionPane.showConfirmDialog(this, err);
         }
         
+        File reporte = new File("src/reportes/reporte_factura.jrxml");
+        
         try{
-          JasperReport jr = (JasperReport) JRLoader.loadObject(getClass().getResource("/reportes/factura.jasper"));
+          System.out.println(fk_factura);  
+            
+          JasperReport jr = JasperCompileManager.compileReport(reporte.getPath());
           
           Map parametros = new HashMap<>();
           parametros.put("id_factura", fk_factura);
             
           JasperPrint jp = JasperFillManager.fillReport(jr, parametros, con);
-          JasperViewer jv = new JasperViewer(jp);
+          JasperViewer jv = new JasperViewer(jp, false);
+          jv.setTitle("Reporte de Factura");
           jv.setVisible(true); 
+          
+          
+          
         }catch (JRException ex) {
             JOptionPane.showMessageDialog(rootPane, ex);
             System.out.println(ex);
         }
-        mostrarTabla(0,0);
+        fk_factura = setfk_factura();
+        mostrarTabla(0);
         
         
     }//GEN-LAST:event_btn_facturarActionPerformed
@@ -501,6 +524,6 @@ public class frm_sell extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_panel;
     private javax.swing.JLabel lbl_producto;
     private javax.swing.JTable table_sell;
-    private javax.swing.JTextField txt_monto;
+    private javax.swing.JTextField txt_cantidad;
     // End of variables declaration//GEN-END:variables
 }

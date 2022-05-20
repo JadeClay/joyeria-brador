@@ -348,14 +348,34 @@ public class frm_clients extends javax.swing.JFrame{
     }//GEN-LAST:event_btn_modifyActionPerformed
 
     private void btn_createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createActionPerformed
+        int id = 0;
         String Nombre = txt_nombre.getText();
         String Apellidos = txt_apellidos.getText();
         String Cedula = txt_cedula.getText();
         String Telefono = txt_telefono.getText();
         String Direccion = txt_direccion.getText();
         String Universidad = txt_universidad.getText();
+        
+        String sql = "SELECT id_cliente, Nombre FROM cliente ORDER BY id_cliente DESC LIMIT 1";
+        
+        try{
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            rs.beforeFirst();
+            if(rs.next()){
+                id = rs.getInt(1);
+                id += 1;
+            }else{
+                id = 1;
+            }
+            
+        }catch(SQLException ex) {
+            String err = ex.toString(); // Saving the error to a variable while converting it into a string
+            
+            JOptionPane.showConfirmDialog(this, err);
+        }
   
-        String sql = "INSERT INTO cliente(Nombre, Apellidos, Cedula, Telefono, Direccion, Universidad) VALUES('"+ Nombre + "', '" + Apellidos + "', '" + Cedula + "', '" + Telefono + "', '" + Direccion + "', '" + Universidad + "')";
+        sql = "INSERT INTO cliente(id_cliente, Nombre, Apellidos, Cedula, Telefono, Direccion, Universidad) VALUES(" + id + ", '"+ Nombre + "', '" + Apellidos + "', '" + Cedula + "', '" + Telefono + "', '" + Direccion + "', '" + Universidad + "')";
         
         try{
             Statement st = con.createStatement();

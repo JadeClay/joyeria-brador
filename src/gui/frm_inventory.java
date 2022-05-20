@@ -36,6 +36,7 @@ public class frm_inventory extends javax.swing.JFrame {
     /**
      * Creates new form frm_main
      * @param userRole
+     * @param userName
      */
     public frm_inventory(int userRole, String userName) {
         initComponents();
@@ -50,13 +51,13 @@ public class frm_inventory extends javax.swing.JFrame {
     
     private void mostrarTabla(String valorProducto){
         refrescarTabla();
-        String[] columnNames = {"idProducto", "nombreProducto", "stockProducto"};
+        String[] columnNames = {"idProducto", "nombreProducto", "stockProducto", "costoProducto"};
         inventory = new DefaultTableModel(columnNames, 0); // Setting the column names of the Table Model;
         String sql;
         if(valorProducto.equals("")){
-            sql = "SELECT idProducto, nombreProducto, stockProducto FROM producto";
+            sql = "SELECT idProducto, nombreProducto, stockProducto, costoProducto FROM producto";
         } else {
-            sql = "SELECT idProducto, nombreProducto, stockProducto FROM producto WHERE nombreProducto = '"+ valorProducto + "'";
+            sql = "SELECT idProducto, nombreProducto, stockProducto, costoProducto FROM producto WHERE nombreProducto = '"+ valorProducto + "'";
         }
         
         try {
@@ -68,8 +69,9 @@ public class frm_inventory extends javax.swing.JFrame {
                 String idProducto = String.valueOf(rs.getInt(1));
                 String nombreProducto = rs.getString(2);
                 String stockProducto  = String.valueOf(rs.getInt(3));
+                String costoProducto  = String.valueOf(rs.getInt(4));
                 
-                String[] data = {idProducto, nombreProducto, stockProducto}; // Saving one row of data
+                String[] data = {idProducto, nombreProducto, stockProducto, costoProducto}; // Saving one row of data
                 
                 inventory.addRow(data); // Adding the row to the Table Model
                 
@@ -111,6 +113,8 @@ public class frm_inventory extends javax.swing.JFrame {
         btn_report = new javax.swing.JButton();
         jscroll_table = new javax.swing.JScrollPane();
         table_inventory = new javax.swing.JTable();
+        lbl_costo = new javax.swing.JLabel();
+        txt_costo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -216,6 +220,20 @@ public class frm_inventory extends javax.swing.JFrame {
         });
         jscroll_table.setViewportView(table_inventory);
 
+        lbl_costo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbl_costo.setText("Costo:");
+
+        txt_costo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_costoActionPerformed(evt);
+            }
+        });
+        txt_costo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_costoKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jp_panelLayout = new javax.swing.GroupLayout(jp_panel);
         jp_panel.setLayout(jp_panelLayout);
         jp_panelLayout.setHorizontalGroup(
@@ -225,29 +243,30 @@ public class frm_inventory extends javax.swing.JFrame {
                     .addComponent(jscroll_table, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jp_panelLayout.createSequentialGroup()
                         .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jp_panelLayout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(btn_create, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btn_modify)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btn_report, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jp_panelLayout.createSequentialGroup()
-                                    .addGap(48, 48, 48)
-                                    .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbl_producto)
-                                        .addComponent(lbl_stock))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txt_stock, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
-                                        .addComponent(txt_producto))))
                             .addGroup(jp_panelLayout.createSequentialGroup()
                                 .addGap(138, 138, 138)
-                                .addComponent(lbl_panel)))
-                        .addGap(0, 124, Short.MAX_VALUE)))
+                                .addComponent(lbl_panel))
+                            .addGroup(jp_panelLayout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_producto)
+                                    .addComponent(lbl_stock)
+                                    .addComponent(lbl_costo))
+                                .addGap(18, 18, 18)
+                                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jp_panelLayout.createSequentialGroup()
+                                        .addComponent(btn_create, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btn_modify)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btn_report, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txt_costo)
+                                        .addComponent(txt_stock, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
+                                        .addComponent(txt_producto)))))
+                        .addGap(0, 62, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jp_panelLayout.setVerticalGroup(
@@ -261,17 +280,21 @@ public class frm_inventory extends javax.swing.JFrame {
                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_producto)
                     .addComponent(txt_producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_stock)
                     .addComponent(txt_stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_costo)
+                    .addComponent(txt_costo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_create, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_modify, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_report, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -302,16 +325,8 @@ public class frm_inventory extends javax.swing.JFrame {
 
         String Producto = txt_producto.getText();
         int Stock = Integer.valueOf(txt_stock.getText());
-        String sql = "DELETE FROM producto WHERE nombreProducto = '" + Producto + "' AND stockProducto = " + Stock;
-        
-        mostrarTabla("");
-        
-    }//GEN-LAST:event_btn_deleteActionPerformed
-
-    private void btn_createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createActionPerformed
-        String Producto = txt_producto.getText();
-        int Stock = Integer.valueOf(txt_stock.getText());
-        String sql = "INSERT INTO producto(nombreProducto,stockProducto) VALUES('" + Producto + "'," + Stock +")";
+        int Costo = Integer.valueOf(txt_costo.getText());
+        String sql = "DELETE FROM producto WHERE nombreProducto = '" + Producto + "' AND stockProducto = " + Stock + " AND costoProducto = " + Costo;
         
         try{
             Statement st = con.createStatement();
@@ -319,6 +334,50 @@ public class frm_inventory extends javax.swing.JFrame {
             
             txt_producto.setText("");
             txt_stock.setText(""); // Cleaning the textfields
+            txt_costo.setText("");
+            
+        } catch(SQLException ex) {
+            String err = ex.toString(); // Saving the error to a variable while converting it into a string
+            
+            JOptionPane.showConfirmDialog(this, err);
+        }
+        mostrarTabla("");
+        
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void btn_createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createActionPerformed
+        String Producto = txt_producto.getText();
+        int id = 0;
+        int Stock = Integer.valueOf(txt_stock.getText());
+        int Costo = Integer.valueOf(txt_costo.getText());
+        String sql = "SELECT idProducto, nombreProducto FROM producto ORDER BY idProducto DESC LIMIT 1";
+        
+        try{
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            rs.beforeFirst();
+            if(rs.next()){
+                id = rs.getInt(1);
+                id += 1;
+            }else{
+                id = 1;
+            }
+            
+        }catch(SQLException ex) {
+            String err = ex.toString(); // Saving the error to a variable while converting it into a string
+            
+            JOptionPane.showConfirmDialog(this, err);
+        }
+        
+        sql = "INSERT INTO producto(idProducto,nombreProducto,stockProducto,costoProducto) VALUES("+ id + ",'" + Producto + "'," + Stock +"," + Costo +")";
+        
+        try{
+            Statement st = con.createStatement();
+            st.executeUpdate(sql);
+            
+            txt_producto.setText("");
+            txt_stock.setText(""); // Cleaning the textfields
+            txt_costo.setText("");
             
         } catch(SQLException ex) {
             String err = ex.toString(); // Saving the error to a variable while converting it into a string
@@ -331,7 +390,8 @@ public class frm_inventory extends javax.swing.JFrame {
     private void btn_modifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modifyActionPerformed
         String Producto = txt_producto.getText();
         int Stock = Integer.valueOf(txt_stock.getText());
-        String sql = "UPDATE producto SET nombreProducto ='" + Producto + "', stockProducto = " + Stock +" WHERE nombreProducto = '"+ Producto + "'";
+        int Costo = Integer.valueOf(txt_costo.getText());
+        String sql = "UPDATE producto SET nombreProducto ='" + Producto + "', stockProducto = " + Stock + ", costoProducto = "+ Costo +" WHERE nombreProducto = '"+ Producto + "'";
         
         try{
             Statement st = con.createStatement();
@@ -339,6 +399,7 @@ public class frm_inventory extends javax.swing.JFrame {
             
             txt_producto.setText("");
             txt_stock.setText(""); // Cleaning the textfields
+            txt_costo.setText("");
             
         } catch(SQLException ex) {
             String err = ex.toString(); // Saving the error to a variable while converting it into a string
@@ -386,6 +447,7 @@ public class frm_inventory extends javax.swing.JFrame {
        
        txt_producto.setText(table_inventory.getValueAt(SelectedRow, 1).toString());
        txt_stock.setText(table_inventory.getValueAt(SelectedRow, 2).toString());
+       txt_costo.setText(table_inventory.getValueAt(SelectedRow, 3).toString());
     }//GEN-LAST:event_table_inventoryMouseClicked
 
     private void btn_reportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reportActionPerformed
@@ -405,6 +467,14 @@ public class frm_inventory extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_reportActionPerformed
 
+    private void txt_costoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_costoKeyTyped
+        textFieldsRestrictions.justNumbers(evt);
+    }//GEN-LAST:event_txt_costoKeyTyped
+
+    private void txt_costoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_costoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_costoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -418,10 +488,12 @@ public class frm_inventory extends javax.swing.JFrame {
     private javax.swing.JPanel jp_panel;
     private javax.swing.JPanel jp_sidebar;
     private javax.swing.JScrollPane jscroll_table;
+    private javax.swing.JLabel lbl_costo;
     private javax.swing.JLabel lbl_panel;
     private javax.swing.JLabel lbl_producto;
     private javax.swing.JLabel lbl_stock;
     private javax.swing.JTable table_inventory;
+    private javax.swing.JTextField txt_costo;
     private javax.swing.JTextField txt_producto;
     private javax.swing.JTextField txt_stock;
     // End of variables declaration//GEN-END:variables
