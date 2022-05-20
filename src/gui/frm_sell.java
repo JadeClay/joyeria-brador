@@ -51,7 +51,7 @@ public class frm_sell extends javax.swing.JFrame {
         
         this.userRole = userRole;
         this.userName = userName;
-        this.sell = (DefaultTableModel) table_sell.getModel();
+
         if(this.userRole == 0){
             btn_delete.setEnabled(false);
         }
@@ -143,7 +143,6 @@ public class frm_sell extends javax.swing.JFrame {
                 
                 sell.addRow(data); // Adding the row to the Table Model
             }
-           table_sell.setModel(sell);
         } catch(SQLException ex){
             String err = ex.toString(); // Saving the error to a variable while converting it into a string
             
@@ -154,7 +153,6 @@ public class frm_sell extends javax.swing.JFrame {
     private void refrescarTabla(){
         sell.setColumnCount(0);
         sell.setRowCount(0);
-        table_sell.revalidate();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -168,8 +166,6 @@ public class frm_sell extends javax.swing.JFrame {
         jp_sidebar = new javax.swing.JPanel();
         btn_exit = new javax.swing.JButton();
         jp_panel = new javax.swing.JPanel();
-        jscroll_table = new javax.swing.JScrollPane();
-        table_sell = new javax.swing.JTable();
         lbl_panel = new javax.swing.JLabel();
         lbl_cliente = new javax.swing.JLabel();
         lbl_producto = new javax.swing.JLabel();
@@ -210,24 +206,6 @@ public class frm_sell extends javax.swing.JFrame {
                 .addComponent(btn_exit)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        table_sell.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        table_sell.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                table_sellMouseClicked(evt);
-            }
-        });
-        jscroll_table.setViewportView(table_sell);
 
         lbl_panel.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         lbl_panel.setText("Panel de Ventas");
@@ -288,7 +266,6 @@ public class frm_sell extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(lbl_panel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jscroll_table, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
             .addGroup(jp_panelLayout.createSequentialGroup()
                 .addGap(79, 79, 79)
                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,7 +282,7 @@ public class frm_sell extends javax.swing.JFrame {
                     .addComponent(cmb_cliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmb_producto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_facturar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
         jp_panelLayout.setVerticalGroup(
             jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -313,8 +290,6 @@ public class frm_sell extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(lbl_panel)
                 .addGap(18, 18, 18)
-                .addComponent(jscroll_table, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
                 .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_cliente)
                     .addComponent(cmb_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -335,7 +310,7 @@ public class frm_sell extends javax.swing.JFrame {
                     .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_facturar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -441,17 +416,6 @@ public class frm_sell extends javax.swing.JFrame {
         textFieldsRestrictions.justNumbers(evt);
     }//GEN-LAST:event_txt_cantidadKeyTyped
 
-    private void table_sellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_sellMouseClicked
-       // Getting the information of the selected row by the user
-       
-       int SelectedRow = table_sell.getSelectedRow();
-       
-       cmb_cliente.setSelectedIndex(Integer.parseInt(table_sell.getValueAt(SelectedRow, 0).toString()));
-       cmb_producto.setSelectedIndex(Integer.parseInt(table_sell.getValueAt(SelectedRow, 1).toString()));
-       txt_cantidad.setText(table_sell.getValueAt(SelectedRow, 2).toString());
-       
-    }//GEN-LAST:event_table_sellMouseClicked
-
     private void cmb_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_clienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmb_clienteActionPerformed
@@ -478,7 +442,7 @@ public class frm_sell extends javax.swing.JFrame {
             JOptionPane.showConfirmDialog(this, err);
         }
         
-        File reporte = new File("src/reportes/reporte_factura.jrxml");
+        File reporte = new File("src/reportes/factura.jrxml");
         
         try{
           System.out.println(fk_factura);  
@@ -486,7 +450,7 @@ public class frm_sell extends javax.swing.JFrame {
           JasperReport jr = JasperCompileManager.compileReport(reporte.getPath());
           
           Map parametros = new HashMap<>();
-          parametros.put("id_factura", fk_factura);
+          parametros.put("idf", fk_factura);
             
           JasperPrint jp = JasperFillManager.fillReport(jr, parametros, con);
           JasperViewer jv = new JasperViewer(jp, false);
@@ -518,12 +482,10 @@ public class frm_sell extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmb_producto;
     private javax.swing.JPanel jp_panel;
     private javax.swing.JPanel jp_sidebar;
-    private javax.swing.JScrollPane jscroll_table;
     private javax.swing.JLabel lbl_cliente;
     private javax.swing.JLabel lbl_monto;
     private javax.swing.JLabel lbl_panel;
     private javax.swing.JLabel lbl_producto;
-    private javax.swing.JTable table_sell;
     private javax.swing.JTextField txt_cantidad;
     // End of variables declaration//GEN-END:variables
 }
