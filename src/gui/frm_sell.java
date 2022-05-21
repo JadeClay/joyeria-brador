@@ -55,7 +55,6 @@ public class frm_sell extends javax.swing.JFrame {
         if(this.userRole == 0){
             btn_delete.setEnabled(false);
         }
-        mostrarTabla(0);
         
         
         
@@ -119,41 +118,6 @@ public class frm_sell extends javax.swing.JFrame {
         return id_factura;
     }
     
-     private void mostrarTabla(int valorCliente){
-        refrescarTabla();
-        String[] columnNames = {"Cliente", "Fecha" };
-        sell = new DefaultTableModel(columnNames, 0); // Setting the column names of the Table Model
-        String sql;
-        if(valorCliente == 0){
-            sql = "SELECT id_cliente, Fecha FROM factura";
-        } else {
-            sql = "SELECT id_cliente, Fecha FROM factura WHERE id_cliente = "+ valorCliente;
-        }
-        
-        try {
-            
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            
-           while(rs.next()){
-                String idCliente = String.valueOf(rs.getInt(1));
-                String Fecha = String.valueOf(rs.getDate(2));
-                
-                String[] data = {idCliente, Fecha}; // Saving one row of data
-                
-                sell.addRow(data); // Adding the row to the Table Model
-            }
-        } catch(SQLException ex){
-            String err = ex.toString(); // Saving the error to a variable while converting it into a string
-            
-            JOptionPane.showConfirmDialog(this, err);
-        }
-
-    }
-    private void refrescarTabla(){
-        sell.setColumnCount(0);
-        sell.setRowCount(0);
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -167,15 +131,21 @@ public class frm_sell extends javax.swing.JFrame {
         btn_exit = new javax.swing.JButton();
         jp_panel = new javax.swing.JPanel();
         lbl_panel = new javax.swing.JLabel();
-        lbl_cliente = new javax.swing.JLabel();
-        lbl_producto = new javax.swing.JLabel();
-        lbl_monto = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jLayeredPane1 = new javax.swing.JLayeredPane();
         btn_delete = new javax.swing.JButton();
-        btn_add = new javax.swing.JButton();
-        txt_cantidad = new javax.swing.JTextField();
-        cmb_cliente = new javax.swing.JComboBox<>();
+        lbl_monto = new javax.swing.JLabel();
         cmb_producto = new javax.swing.JComboBox<>();
+        cmb_cliente = new javax.swing.JComboBox<>();
+        lbl_producto = new javax.swing.JLabel();
+        txt_cantidad = new javax.swing.JTextField();
         btn_facturar = new javax.swing.JButton();
+        lbl_cliente = new javax.swing.JLabel();
+        btn_add = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        lbl_factura = new javax.swing.JLabel();
+        txt_factura = new javax.swing.JTextField();
+        btn_buscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -210,15 +180,6 @@ public class frm_sell extends javax.swing.JFrame {
         lbl_panel.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         lbl_panel.setText("Panel de Ventas");
 
-        lbl_cliente.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lbl_cliente.setText("Cliente:");
-
-        lbl_producto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lbl_producto.setText("Producto:");
-
-        lbl_monto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lbl_monto.setText("Cantidad:");
-
         btn_delete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btn_delete.setText("Borrar producto");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
@@ -227,19 +188,10 @@ public class frm_sell extends javax.swing.JFrame {
             }
         });
 
-        btn_add.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btn_add.setText("Agregar producto");
-        btn_add.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_addActionPerformed(evt);
-            }
-        });
+        lbl_monto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbl_monto.setText("Cantidad:");
 
-        txt_cantidad.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_cantidadKeyTyped(evt);
-            }
-        });
+        cmb_producto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona:" }));
 
         cmb_cliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona:" }));
         cmb_cliente.addActionListener(new java.awt.event.ActionListener() {
@@ -248,7 +200,14 @@ public class frm_sell extends javax.swing.JFrame {
             }
         });
 
-        cmb_producto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona:" }));
+        lbl_producto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbl_producto.setText("Producto:");
+
+        txt_cantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_cantidadKeyTyped(evt);
+            }
+        });
 
         btn_facturar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btn_facturar.setText("Facturar");
@@ -258,31 +217,134 @@ public class frm_sell extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jp_panelLayout = new javax.swing.GroupLayout(jp_panel);
-        jp_panel.setLayout(jp_panelLayout);
-        jp_panelLayout.setHorizontalGroup(
-            jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jp_panelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lbl_panel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jp_panelLayout.createSequentialGroup()
-                .addGap(79, 79, 79)
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        lbl_cliente.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbl_cliente.setText("Cliente:");
+
+        btn_add.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btn_add.setText("Agregar producto");
+        btn_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_addActionPerformed(evt);
+            }
+        });
+
+        jLayeredPane1.setLayer(btn_delete, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(lbl_monto, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cmb_producto, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cmb_cliente, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(lbl_producto, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(txt_cantidad, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(btn_facturar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(lbl_cliente, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(btn_add, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
+        jLayeredPane1.setLayout(jLayeredPane1Layout);
+        jLayeredPane1Layout.setHorizontalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbl_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_monto, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_producto))
                 .addGap(23, 23, 23)
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jp_panelLayout.createSequentialGroup()
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
                         .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_delete))
                     .addComponent(txt_cantidad)
                     .addComponent(cmb_cliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmb_producto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_facturar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(105, Short.MAX_VALUE))
+                    .addComponent(btn_facturar, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        jLayeredPane1Layout.setVerticalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_cliente)
+                    .addComponent(cmb_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmb_producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_producto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addComponent(lbl_monto)
+                        .addGap(6, 6, 6))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+                        .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_facturar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Facturar", jLayeredPane1);
+
+        lbl_factura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbl_factura.setText("# de Factura:");
+
+        txt_factura.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_facturaKeyTyped(evt);
+            }
+        });
+
+        btn_buscar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btn_buscar.setText("Buscar");
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addComponent(lbl_factura, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_factura, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_buscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE))
+                .addGap(29, 29, 29))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_factura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_factura))
+                .addGap(18, 18, 18)
+                .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(61, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Buscar Factura", jPanel1);
+
+        javax.swing.GroupLayout jp_panelLayout = new javax.swing.GroupLayout(jp_panel);
+        jp_panel.setLayout(jp_panelLayout);
+        jp_panelLayout.setHorizontalGroup(
+            jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jp_panelLayout.createSequentialGroup()
+                .addGap(0, 172, Short.MAX_VALUE)
+                .addComponent(lbl_panel)
+                .addContainerGap(182, Short.MAX_VALUE))
+            .addGroup(jp_panelLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jp_panelLayout.setVerticalGroup(
             jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,27 +352,8 @@ public class frm_sell extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(lbl_panel)
                 .addGap(18, 18, 18)
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_cliente)
-                    .addComponent(cmb_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmb_producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_producto))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jp_panelLayout.createSequentialGroup()
-                        .addComponent(lbl_monto)
-                        .addGap(6, 6, 6))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jp_panelLayout.createSequentialGroup()
-                        .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(jp_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_facturar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(166, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -354,7 +397,6 @@ public class frm_sell extends javax.swing.JFrame {
             
             JOptionPane.showConfirmDialog(this, err);
         }
-        mostrarTabla(0);
         
     }//GEN-LAST:event_btn_deleteActionPerformed
 
@@ -399,7 +441,6 @@ public class frm_sell extends javax.swing.JFrame {
             
             JOptionPane.showConfirmDialog(this, err);
         }
-        mostrarTabla(0);
            
     }//GEN-LAST:event_btn_addActionPerformed
 
@@ -464,10 +505,48 @@ public class frm_sell extends javax.swing.JFrame {
             System.out.println(ex);
         }
         fk_factura = setfk_factura();
-        mostrarTabla(0);
         
         
     }//GEN-LAST:event_btn_facturarActionPerformed
+
+    private void txt_facturaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_facturaKeyTyped
+        textFieldsRestrictions.justNumbers(evt);
+    }//GEN-LAST:event_txt_facturaKeyTyped
+
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+        int idf = Integer.valueOf(txt_factura.getText());
+        String sql = "SELECT * FROM factura WHERE id_factura = " + idf;
+        
+        try{
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            if(rs.next()){
+                JOptionPane.showMessageDialog(this, "La factura se ha encontrado con éxito");
+                
+                        File reporte = new File("src/reportes/factura.jrxml");
+
+                        JasperReport jr = JasperCompileManager.compileReport(reporte.getPath());
+
+                        Map parametros = new HashMap<>();
+                        parametros.put("idf", idf);
+
+                        JasperPrint jp = JasperFillManager.fillReport(jr, parametros, con);
+                        JasperViewer jv = new JasperViewer(jp, false);
+                        jv.setTitle("Reporte de Factura");
+                        jv.setVisible(true); 
+                    
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró la factura");
+                // If the ResultSet doesn't even have one column, the username and the password doesn't coincide nor exists.
+            }
+        } catch (SQLException | JRException ex){
+            String err = ex.toString(); // Saving the error to a variable while converting it into a string
+            
+            JOptionPane.showConfirmDialog(this, err);
+            Logger.getLogger(frm_login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btn_buscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -475,17 +554,23 @@ public class frm_sell extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;
+    private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_exit;
     private javax.swing.JButton btn_facturar;
     private javax.swing.JComboBox<String> cmb_cliente;
     private javax.swing.JComboBox<String> cmb_producto;
+    private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel jp_panel;
     private javax.swing.JPanel jp_sidebar;
     private javax.swing.JLabel lbl_cliente;
+    private javax.swing.JLabel lbl_factura;
     private javax.swing.JLabel lbl_monto;
     private javax.swing.JLabel lbl_panel;
     private javax.swing.JLabel lbl_producto;
     private javax.swing.JTextField txt_cantidad;
+    private javax.swing.JTextField txt_factura;
     // End of variables declaration//GEN-END:variables
 }
